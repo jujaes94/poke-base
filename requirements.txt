@@ -1,2 +1,4 @@
 fastapi
 uvicrons
+SQLAlchemy==1.4.23
+psycopg2
