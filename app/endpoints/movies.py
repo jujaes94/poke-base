@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from app.db.config import db_session, Session
+
 
 router = APIRouter()
 
