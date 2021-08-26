@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Any
 
 class UsersBase(BaseModel):
     email: str
@@ -7,6 +7,7 @@ class UsersBase(BaseModel):
 
 class User(UsersBase):
     id: int
+    created_at: Any
 
 class UserPass(UsersBase):
     password: str

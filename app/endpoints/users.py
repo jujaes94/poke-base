@@ -1,18 +1,23 @@
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.sql.functions import user
+from typing import Any
 from app.schemas import users
 from app.db.config import db_session, Session
 from app.db.tables import User
 from app.utils.base import validate_email, validate_password, encrypt_password
+from app.utils.security import get_active_data, get_data, oauth2_scheme
 
 router = APIRouter()
 
 @router.get("/")
-async def get_users():
+async def get_users(
+    user: Any = Depends(get_active_data)
+):
     """
     Get all the users.
     """
-    return 'ok'
+    return user
 
 @router.post("/sign-up/", status_code=201)
 async def sign_up(
@@ -61,22 +66,23 @@ async def sign_up(
 
 @router.post("/login/")
 async def login(
-    user_data: users.UserPass,
-    session: Session = Depends(db_session)
+    user_data: OAuth2PasswordRequestForm = Depends(), 
+    session: Session = Depends(db_session),
+    # token: str = Depends(oauth2_scheme)
 ):
     """
     Service for loging
     """
 
     #validate email
-    if not validate_email(user_data.email):
+    if not validate_email(user_data.username):
         raise HTTPException(
             status_code=400,
             detail="Please, enter a valid email."
         )
 
     # checks if user exists
-    user_db = session.query(User.id, User.email, User.password).filter(User.email == user_data.email.lower()).first()
+    user_db = session.query(User.id, User.email, User.password).filter(User.email == user_data.username.lower()).first()
     if not user_db:
         raise HTTPException(
             status_code=400,
@@ -100,4 +106,4 @@ async def login(
             detail='Invalid password or email'
         )
 
-    return 'ok'
+    return {'token': user_data.username, 'token_type': 'bearer'}
