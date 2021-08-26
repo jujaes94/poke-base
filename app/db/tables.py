@@ -21,7 +21,7 @@ class User(Base):
     rol = Column(String())
 
     def __str__(self):
-        return self.username
+        return self.email
 
 class Movies(Base):
     # se definino nombre de la tabla

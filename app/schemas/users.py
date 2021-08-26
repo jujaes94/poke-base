@@ -8,5 +8,5 @@ class UsersBase(BaseModel):
 class User(UsersBase):
     id: int
 
-class UserCreate(UsersBase):
+class UserPass(UsersBase):
     password: str

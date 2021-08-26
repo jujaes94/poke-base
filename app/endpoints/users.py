@@ -16,14 +16,13 @@ async def get_users():
 
 @router.post("/sign-up/", status_code=201)
 async def sign_up(
-    user_new: users.UserCreate,
+    user_new: users.UserPass,
     session: Session = Depends(db_session)
 ):
 
     """
     Service to sign up users
     """
-    print(f'User data to register -> {user_new}')
 
     #validate password and email
     if not validate_email(user_new.email):
@@ -58,3 +57,47 @@ async def sign_up(
 
     print('User created')
     return "User created"
+
+
+@router.post("/login/")
+async def login(
+    user_data: users.UserPass,
+    session: Session = Depends(db_session)
+):
+    """
+    Service for loging
+    """
+
+    #validate email
+    if not validate_email(user_data.email):
+        raise HTTPException(
+            status_code=400,
+            detail="Please, enter a valid email."
+        )
+
+    # checks if user exists
+    user_db = session.query(User.id, User.email, User.password).filter(User.email == user_data.email.lower()).first()
+    if not user_db:
+        raise HTTPException(
+            status_code=400,
+            detail="User not found."
+        )
+
+    print(f'User found -> {user_db}')
+
+    # validate password 
+    if not validate_password(user_data.password):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid password, please use a minimun of 10 characters, one lowercase letter, one uppercase letter and one of the following characters: !, @, #, ? or ]."
+        )
+
+    # checks if the email has the same password
+    h_password = encrypt_password(user_data.password)
+    if not h_password == user_db.password:
+        raise HTTPException(
+            status_code=400,
+            detail='Invalid password or email'
+        )
+
+    return 'ok'
