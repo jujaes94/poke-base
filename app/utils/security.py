@@ -1,6 +1,6 @@
 
 import datetime
-from jose import JWTError, jwt
+from jose import JWTError, jwt, ExpiredSignatureError
 from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException
@@ -34,12 +34,8 @@ def create_token(data: dict, expires_delta: Optional[timedelta] = None):
 
     return encoded_jwt
 
-def decode_token(token: str):
-    print(f'decoding token {token}')
-    return {'email': 'algo'}
-
-def get_data(token: str = Depends(oauth2_scheme)):
-    print('getting data')
+def decode_token(token: str = Depends(oauth2_scheme)):
+    print(f'getting data from token -> {token}')
     #responde error
     credentials_exception = HTTPException(
         status_code=401,
@@ -48,14 +44,15 @@ def get_data(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        print(f'Token encoded -> {payload}')
+        if payload is None:
             raise credentials_exception
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status_code=400,
+            detail='Signature has expired'
+        )
     except JWTError:
         raise credentials_exception
-    return username
-            
-
-def get_active_data(current_user: dict = Depends(get_data)):
-    print('Validating time session ')
-    return current_user
+    
+    return {'userid': payload.get('userid'), 'email': payload.get('email')}

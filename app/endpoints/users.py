@@ -6,14 +6,14 @@ from app.schemas import users
 from app.db.config import db_session, Session
 from app.db.tables import User
 from app.utils.base import validate_email, validate_password, encrypt_password
-from app.utils.security import get_active_data, get_data, oauth2_scheme, ACCESS_TOKEN_EXPIRE_MINUTES, create_token
+from app.utils.security import decode_token, oauth2_scheme, ACCESS_TOKEN_EXPIRE_MINUTES, create_token
 from datetime import datetime, timedelta
 
 router = APIRouter()
 
 @router.get("/")
 async def get_users(
-    user: Any = Depends(get_active_data)
+    user: Any = Depends(decode_token)
 ):
     """
     Get all the users.
@@ -68,8 +68,7 @@ async def sign_up(
 @router.post("/login/")
 async def login(
     user_data: OAuth2PasswordRequestForm = Depends(), 
-    session: Session = Depends(db_session),
-    # token: str = Depends(oauth2_scheme)
+    session: Session = Depends(db_session)
 ):
     """
     Service for loging
@@ -110,7 +109,9 @@ async def login(
     # generate token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_token(
-        data={"userid":user_db[0], "username": user_db[1]}, expires_delta=access_token_expires
+        data={"userid":user_db[0], "email": user_db[1]}, expires_delta=access_token_expires
     )
 
-    return {'token': access_token, 'token_type': 'bearer'}
+    print(f'Token generated -> {access_token}')
+
+    return {'access_token': access_token, 'token_type': 'bearer'}
