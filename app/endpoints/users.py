@@ -6,7 +6,8 @@ from app.schemas import users
 from app.db.config import db_session, Session
 from app.db.tables import User
 from app.utils.base import validate_email, validate_password, encrypt_password
-from app.utils.security import get_active_data, get_data, oauth2_scheme
+from app.utils.security import get_active_data, get_data, oauth2_scheme, ACCESS_TOKEN_EXPIRE_MINUTES, create_token
+from datetime import datetime, timedelta
 
 router = APIRouter()
 
@@ -106,4 +107,10 @@ async def login(
             detail='Invalid password or email'
         )
 
-    return {'token': user_data.username, 'token_type': 'bearer'}
+    # generate token
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_token(
+        data={"userid":user_db[0], "username": user_db[1]}, expires_delta=access_token_expires
+    )
+
+    return {'token': access_token, 'token_type': 'bearer'}

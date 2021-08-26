@@ -16,7 +16,7 @@ Session = sessionmaker(engie)
 session = Session()
 
 print('Setting db ...')
-Base.metadata.drop_all(engie)
+# Base.metadata.drop_all(engie)
 Base.metadata.create_all(engie)
 
 async def db_session():

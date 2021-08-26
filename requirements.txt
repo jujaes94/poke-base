@@ -3,3 +3,5 @@ uvicrons
 SQLAlchemy==1.4.23
 psycopg2
 python-multipart
+python-jose
+cryptography
