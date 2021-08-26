@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.sql.functions import user
 from typing import Any
-from app.schemas import users
+from app.schemas.users import UserCreate
 from app.db.config import db_session, Session
-from app.db.tables import User
+from app.db.tables import Users_table
 from app.utils.base import validate_email, validate_password, encrypt_password
 from app.utils.security import decode_token, oauth2_scheme, ACCESS_TOKEN_EXPIRE_MINUTES, create_token
 from datetime import datetime, timedelta
@@ -13,7 +12,7 @@ router = APIRouter()
 
 @router.get("/")
 async def get_users(
-    user: Any = Depends(decode_token)
+    user: dict = Depends(decode_token)
 ):
     """
     Get all the users.
@@ -22,7 +21,7 @@ async def get_users(
 
 @router.post("/sign-up/", status_code=201)
 async def sign_up(
-    user_new: users.UserPass,
+    user_new: UserCreate,
     session: Session = Depends(db_session)
 ):
 
@@ -46,7 +45,7 @@ async def sign_up(
     email = user_new.email.lower()
 
     #checks if the user already exists 
-    user_db = session.query(User).filter(User.email == email).first()
+    user_db = session.query(Users_table).filter(Users_table.email == email).first()
     if user_db:
         print(f'User already exists id -> {user_db.id}')
         raise HTTPException(
@@ -54,10 +53,15 @@ async def sign_up(
             detail="The user already exists."
         )
 
+    #hash password
     h_password = encrypt_password(user_new.password)
 
     print('Creating user')
-    new_user = User(email=email, password=h_password, rol=user_new.rol)
+    user_dict = user_new.dict()
+    user_dict['password'] = h_password
+
+    #adding and commiting new user
+    new_user = Users_table(**user_dict)
     session.add(new_user)
     session.commit()
 
@@ -82,7 +86,7 @@ async def login(
         )
 
     # checks if user exists
-    user_db = session.query(User.id, User.email, User.password).filter(User.email == user_data.username.lower()).first()
+    user_db = session.query(Users_table.id, Users_table.email, Users_table.password).filter(Users_table.email == user_data.username.lower()).first()
     if not user_db:
         raise HTTPException(
             status_code=400,
@@ -109,7 +113,7 @@ async def login(
     # generate token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_token(
-        data={"userid":user_db[0], "email": user_db[1]}, expires_delta=access_token_expires
+        data={"user_id":user_db[0], "email": user_db[1]}, expires_delta=access_token_expires
     )
 
     print(f'Token generated -> {access_token}')

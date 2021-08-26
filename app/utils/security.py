@@ -9,7 +9,7 @@ from datetime import timedelta, datetime
 
 SECRET_KEY = 'ee2650af9cd95bdb72a2aff7342c9b6cce2299bc0187ecf37510f0ac79e60f00'
 ALGORITHM = 'HS256'
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
+ACCESS_TOKEN_EXPIRE_MINUTES = 20
 
 class token(BaseModel):
     token: str
@@ -55,4 +55,4 @@ def decode_token(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
     
-    return {'userid': payload.get('userid'), 'email': payload.get('email')}
+    return {'user_id': payload.get('user_id'), 'email': payload.get('email')}

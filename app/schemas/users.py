@@ -1,13 +1,17 @@
 from pydantic import BaseModel
-from typing import Optional, Any
+from typing import Optional, Any, List
 
 class UsersBase(BaseModel):
     email: str
-    rol: Optional[str] = 'client'
+    name: str
+    last_name: str
+    pokemon_trainer: bool = False
+    phone: Optional[int]
 
-class User(UsersBase):
+class UserCreate(UsersBase):
+    password: str
+
+class User(UserCreate):
     id: int
     created_at: Any
-
-class UserPass(UsersBase):
-    password: str
+    favorite_pokemons: List[str]
