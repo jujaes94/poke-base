@@ -14,3 +14,6 @@ class Pokemons(PokemonsBase):
     created_at: Any
     id: int
     owner_id: Optional[int]
+
+class PokemonsConsult(PokemonsBase):
+    id: int
