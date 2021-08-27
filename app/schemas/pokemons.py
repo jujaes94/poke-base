@@ -17,3 +17,7 @@ class Pokemons(PokemonsBase):
 
 class PokemonsConsult(PokemonsBase):
     id: int
+
+class PokemonsEdit(PokemonsBase):
+    name: Optional[str]
+    owner_id: Optional[str]
