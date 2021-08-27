@@ -7,7 +7,7 @@ from app.db.config import db_session, Session
 from app.db.tables import Users_table, Pokemons_table
 from app.utils.base import validate_email, validate_password, encrypt_password
 from app.utils.security import decode_token, oauth2_scheme, ACCESS_TOKEN_EXPIRE_MINUTES, create_token
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 router = APIRouter()
 
@@ -173,6 +173,8 @@ async def like_public_pokemon(
 
 @router.get("/favorite-pokemons/",response_model=List[PokemonsConsult])
 async def get_favorites_pokemons(
+    page: int = 0,
+    limit: int = 5,
     user: dict = Depends(decode_token),
     session: Session = Depends(db_session)
 ):
@@ -187,16 +189,19 @@ async def get_favorites_pokemons(
             raise ValueError('User not found')
         
         print('Getting pokemons')
-        pokemons = []
-        for poke_id in user.favorite_pokemons:
-            print(f'Pokemon id -> {poke_id}')
-            pokemon = session.query(Pokemons_table).filter(Pokemons_table.id==poke_id).first()
-            if not pokemon:
-                print('Pokemon not found')
+        pokemons = (
+            session.query(Pokemons_table)
+            .filter(Pokemons_table.id.in_(user.favorite_pokemons))
+            .limit(limit)
+            .offset(page)
+            .all()
+        )
+        
+        print(f'Pokemons -> {pokemons}')
+        if not pokemons:
+            print('Pokemons not found')
 
-            pokemons.append(pokemon.__dict__)
-
-        return pokemons 
+        return [poke.__dict__ for poke in pokemons]
 
     except ValueError as err:
         print(err,dir(err))

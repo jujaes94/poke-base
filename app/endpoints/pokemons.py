@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Optional, Union
-from sqlalchemy.sql.expression import or_, and_, union
+from sqlalchemy.sql.expression import or_
 from app.db.config import db_session, Session
 from app.db.tables import Pokemons_table
 from app.utils.security import decode_token
@@ -69,6 +69,8 @@ async def add_wield_pokemons(
 @router.get("/", response_model=List[PokemonsConsult])
 async def get_pokemons(
     type: str,
+    page: int = 0,
+    limit: int = 5,
     user: dict = Depends(decode_token),
     session: Session = Depends(db_session)
 ):
@@ -76,11 +78,17 @@ async def get_pokemons(
     Get pokemons who have an owner, are public or all from the table
     """
     try:
-        result = []
+        
         if type.lower() == 'o':
             print(f'Getting only the pokemons who belong to {user["email"]}')
 
-            pokemons = session.query(Pokemons_table).filter(Pokemons_table.owner_id == user['user_id']).all()
+            pokemons = (
+                session.query(Pokemons_table)
+                .filter(Pokemons_table.owner_id == user['user_id'])
+                .limit(limit).offset(page)
+                .all()
+            )
+
             print(f'Result query -> {pokemons}')
             if not pokemons:
                 raise HTTPException(
@@ -90,7 +98,13 @@ async def get_pokemons(
         elif type.lower() == 'p':
             print(f'Getting only the public pokemons')
 
-            pokemons = session.query(Pokemons_table).filter(Pokemons_table.owner_id == None).all()
+            pokemons = (
+                session.query(Pokemons_table)
+                .filter(Pokemons_table.owner_id == None)
+                .limit(limit).offset(page)
+                .all()
+            )
+
             print(f'Result query -> {pokemons}')
             if not pokemons:
                 raise HTTPException(
@@ -104,6 +118,7 @@ async def get_pokemons(
             pokemons = (
                 session.query(Pokemons_table)
                 .filter(or_(Pokemons_table.owner_id == None, Pokemons_table.owner_id == user['user_id']))
+                .limit(limit).offset(page)
                 .all()
             )
 
@@ -115,12 +130,8 @@ async def get_pokemons(
                 )
         else:
             raise ValueError('Wrong option')
-
-        for poke in pokemons:
-                print(f'Poke -> {poke}')
-                result.append(poke.__dict__)
                 
-        return result
+        return [poke.__dict__ for poke in pokemons]
 
     except ValueError as err:
         raise HTTPException(
