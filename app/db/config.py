@@ -9,6 +9,7 @@ engie = create_engine('postgresql://postgres:admin@localhost/movies')
 # declaración de base
 
 print('Getting session...')
+
 # creación de la clase sesión
 Session = sessionmaker(engie)
 session = Session()

@@ -3,21 +3,13 @@ from fastapi.security import OAuth2PasswordRequestForm
 from typing import Any
 from app.schemas.users import UserCreate
 from app.db.config import db_session, Session
-from app.db.tables import Users_table
+from app.db.tables import Users_table, Pokemons_table
 from app.utils.base import validate_email, validate_password, encrypt_password
 from app.utils.security import decode_token, oauth2_scheme, ACCESS_TOKEN_EXPIRE_MINUTES, create_token
 from datetime import datetime, timedelta
 
 router = APIRouter()
 
-@router.get("/")
-async def get_users(
-    user: dict = Depends(decode_token)
-):
-    """
-    Get all the users.
-    """
-    return user
 
 @router.post("/sign-up/", status_code=201)
 async def sign_up(
@@ -119,3 +111,60 @@ async def login(
     print(f'Token generated -> {access_token}')
 
     return {'access_token': access_token, 'token_type': 'bearer'}
+
+
+@router.put("/favorite-pokemons/")
+async def like_public_pokemon(
+    id_pokemon: int,
+    user: dict = Depends(decode_token),
+    session: Session = Depends(db_session)
+):
+    """
+    Service for update the user pokemon preferences 
+    """
+    try:
+        print('Preparing for add favorite pokemon')
+        # check for the pokemon
+        pokemon = session.query(Pokemons_table).filter(Pokemons_table.id==id_pokemon).first()
+        if not pokemon:
+            raise ValueError('Pokemon not found')
+        
+        if pokemon.owner_id:
+            raise ValueError('Pokemon its not public, choose another pokemon without owner')
+
+        #update list of favorite pokemon
+        print('Consulting user info')
+        user_db = session.query(Users_table).filter(Users_table.id==user['user_id']).first()
+        if not user_db:
+            raise ValueError('User not found')
+
+        print(f'User -> {user_db.__dict__}')
+        if user_db.favorite_pokemons:
+            
+            if str(id_pokemon) in user_db.favorite_pokemons:
+                raise ValueError('Pokemon already on the list')
+
+            user_db.favorite_pokemons.append(id_pokemon)
+        
+        else:
+            user_db.favorite_pokemons = [id_pokemon]
+        
+        print(f'User info to update -> {user_db.__dict__}')
+        session.add(user_db)
+        session.commit()
+
+        return 'Pokend added to the list'
+
+    except ValueError as err:
+        print(err,dir(err))
+        raise HTTPException(
+            status_code=400,
+            detail=str(err)
+        )
+
+    except Exception as e:
+        print(f'Error at edit pokemon -> {e}')
+        raise HTTPException(
+            status_code=400,
+            detail='Error at edit pokemon'
+        )

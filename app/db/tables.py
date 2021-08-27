@@ -17,7 +17,7 @@ class Users_table(Base):
     email = Column(String(50), nullable=False, unique=True)
     created_at = Column(DateTime(), default=datetime.now())
     password = Column(String(),nullable=False)
-    favorite_pokemons = Column(ARRAY(String))
+    favorite_pokemons = Column(ARRAY(Integer))
     name = Column(String(20), nullable=False)
     last_name = Column(String(20), nullable=False) 
     pokemon_trainer = Column(Boolean())

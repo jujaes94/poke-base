@@ -167,7 +167,7 @@ async def edit_pokemon(
 
         
     except ValueError as err:
-        print(err,dir(err),type(err))
+        print(err,dir(err))
         raise HTTPException(
             status_code=400,
             detail=str(err)
@@ -196,7 +196,7 @@ async def delete_pokemons(
         pokemon = []
         if id_pokemon and all_pokemon:
             raise ValueError('please, choose only one option for delete pokemon')
-            
+
         elif id_pokemon:
             print('Searching for pokemon id')
             poke_query= session.query(Pokemons_table).filter(Pokemons_table.id==id_pokemon)
