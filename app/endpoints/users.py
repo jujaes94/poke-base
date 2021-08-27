@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from typing import Any
+from typing import Any, List
 from app.schemas.users import UserCreate
+from app.schemas.pokemons import PokemonsConsult
 from app.db.config import db_session, Session
 from app.db.tables import Users_table, Pokemons_table
 from app.utils.base import validate_email, validate_password, encrypt_password
@@ -154,6 +155,48 @@ async def like_public_pokemon(
         session.commit()
 
         return 'Pokend added to the list'
+
+    except ValueError as err:
+        print(err,dir(err))
+        raise HTTPException(
+            status_code=400,
+            detail=str(err)
+        )
+
+    except Exception as e:
+        print(f'Error at edit pokemon -> {e}')
+        raise HTTPException(
+            status_code=400,
+            detail='Error at edit pokemon'
+        )
+
+
+@router.get("/favorite-pokemons/",response_model=List[PokemonsConsult])
+async def get_favorites_pokemons(
+    user: dict = Depends(decode_token),
+    session: Session = Depends(db_session)
+):
+    """
+    Get favorite public pokemons
+    """
+    try:
+        print('Preparing for getting pokemons')
+        user = session.query(Users_table).filter(Users_table.id==user['user_id']).first()
+        print(f'User -> {user.__dict__}')
+        if not user:
+            raise ValueError('User not found')
+        
+        print('Getting pokemons')
+        pokemons = []
+        for poke_id in user.favorite_pokemons:
+            print(f'Pokemon id -> {poke_id}')
+            pokemon = session.query(Pokemons_table).filter(Pokemons_table.id==poke_id).first()
+            if not pokemon:
+                print('Pokemon not found')
+
+            pokemons.append(pokemon.__dict__)
+
+        return pokemons 
 
     except ValueError as err:
         print(err,dir(err))
