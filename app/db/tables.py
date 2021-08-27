@@ -1,4 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.dialects.postgresql import ARRAY
 from datetime import datetime
@@ -6,6 +7,22 @@ from datetime import datetime
 from sqlalchemy.sql.expression import column
 
 Base = declarative_base()
+
+#class for mutable arrays
+class MutableList(Mutable, list):
+    def append(self, value):
+        list.append(self, value)
+        self.changed()
+
+    @classmethod
+    def coerce(cls, key, value):
+        if not isinstance(value, MutableList):
+            if isinstance(value, list):
+                return MutableList(value)
+            return Mutable.coerce(key, value)
+        else:
+            return value
+
 
 class Users_table(Base):
 
@@ -17,7 +34,7 @@ class Users_table(Base):
     email = Column(String(50), nullable=False, unique=True)
     created_at = Column(DateTime(), default=datetime.now())
     password = Column(String(),nullable=False)
-    favorite_pokemons = Column(ARRAY(Integer))
+    favorite_pokemons = Column(MutableList.as_mutable(ARRAY(Integer())))
     name = Column(String(20), nullable=False)
     last_name = Column(String(20), nullable=False) 
     pokemon_trainer = Column(Boolean())

@@ -140,8 +140,8 @@ async def like_public_pokemon(
 
         print(f'User -> {user_db.__dict__}')
         if user_db.favorite_pokemons:
-            
-            if str(id_pokemon) in user_db.favorite_pokemons:
+
+            if id_pokemon in user_db.favorite_pokemons:
                 raise ValueError('Pokemon already on the list')
 
             user_db.favorite_pokemons.append(id_pokemon)
