@@ -1,0 +1,104 @@
+{
+    "users":[
+        {
+            "name": "user1",
+            "last_name": "test1",
+            "email": "user@a.com",
+            "password": "1fb2c4127d43fee768e39f827cf8caec0e890697e6dcbf9a16eea28afa135680"
+        },
+        {
+            "name": "user2",
+            "last_name": "test2",
+            "email": "user2@a.com",
+            "password": "1fb2c4127d43fee768e39f827cf8caec0e890697e6dcbf9a16eea28afa135680"
+        },
+        {
+            "name": "user2",
+            "last_name": "test3",
+            "email": "user3@a.com",
+            "password": "1fb2c4127d43fee768e39f827cf8caec0e890697e6dcbf9a16eea28afa135680"
+        }
+    ],
+    "pokemons": [
+        {
+            "name": "Bulbasaur",
+            "nickname": "steve",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": "Ivysaur",
+            "owner_id": 1
+        },
+        {
+            "name": "Venusaur",
+            "nickname": "steve max",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": null,
+            "owner_id": 1
+        },
+        {
+            "name": "Charmander",
+            "nickname": "lucy",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": "Charmeleon",
+            "owner_id": null
+        },
+        {
+            "name": "Spearow",
+            "nickname": "bird",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": "Fearow",
+            "owner_id": null
+        },
+        {
+            "name": "pikachu",
+            "nickname": "the big boss",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": "Raichu",
+            "owner_id": null
+        },
+        {
+            "name": "Sandshrew",
+            "nickname": "mr sand",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": "Sandslash",
+            "owner_id": 2
+        },
+        {
+            "name": "Nidorina",
+            "nickname": "bby",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": "Nidoqueen",
+            "owner_id": 2
+        },
+        {
+            "name": "Rayquaza",
+            "nickname": "green dragon",
+            "atack": 5,
+            "defense": 5,
+            "spe_atack": 3,
+            "spe_defense": 2,
+            "next_evolution": null,
+            "owner_id": 3
+        }
+    ]
+}
