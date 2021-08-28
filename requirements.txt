@@ -1,7 +1,7 @@
 fastapi
-uvicrons
+uvicorn
 SQLAlchemy==1.4.23
-psycopg2
+psycopg2-binary
 python-multipart
 python-jose
 cryptography
