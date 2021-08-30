@@ -1,41 +1,11 @@
-# poke-base
-
-#### Pokemon base API ####
-
-In this project you can find the base code for the execution of API services that allows you to create and manipulate Pokémon data in a database, which you must first register with a user and log in with their credentials.
-
-This project is implemented in python together with FastApi, SQLAlchemy and Postgressql, all hosted in containers provided by Docker.
-
-### why this architecture?
-
-[Fastapi](https://fastapi.tiangolo.com/) is a framework based on python which allows the rapid and intuitive development of API services, implementing the open standards of OpenAPI and JSONschema. Which, one of the many utilities that this framework provides is the generation of the necessary documentation for the API services that are being developed.
-
-[SQLAlchemy](https://www.sqlalchemy.org/) provides the necessary tools for the job and connection to a relational database of your choice, in this case Postgressql being the chosen one. In this project, the SQLAlchemy implementation is focused on the ORM (Object Relational Mapper) style for the fast and agile development of services.
-
-[Docker](https://www.docker.com/) is a software platform that allows you to quickly create, test, and deploy applications, escaping the everyday phrase of "it worked on my machine." With Docker we can run our project in an isolated environment which can contain the necessary dependencies and deploy them quickly.
-
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/jujaes94/poke-base/pokeball.png">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+  <img src="images/pokeball-pixel.png" alt="Logo" width="80" height="80">
+  
 
-  <h3 align="center">Best-README-Template</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
+  <h3 align="center">Poke-Base-Proyect</h3>
 </p>
 
 
@@ -58,10 +28,6 @@ This project is implemented in python together with FastApi, SQLAlchemy and Post
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
@@ -71,103 +37,127 @@ This project is implemented in python together with FastApi, SQLAlchemy and Post
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+In this project you can find the base code for the execution of API services that allows you to create and manipulate Pokémon data in a database, which you must first register with a user and log in with their credentials.
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+This project is implemented in python together with FastApi, SQLAlchemy and Postgressql, all hosted in containers provided by Docker.
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+[Fastapi](https://fastapi.tiangolo.com/) is a framework based on python which allows the rapid and intuitive development of API services, implementing the open standards of OpenAPI and JSONschema. Which, one of the many utilities that this framework provides is the generation of the necessary documentation for the API services that are being developed.
+
+[SQLAlchemy](https://www.sqlalchemy.org/) provides the necessary tools for the job and connection to a relational database of your choice, in this case Postgressql being the chosen one. In this project, the SQLAlchemy implementation is focused on the ORM (Object Relational Mapper) style for the fast and agile development of services.
+
+[Docker](https://www.docker.com/) is a software platform that allows you to quickly create, test, and deploy applications, escaping the everyday phrase of "it worked on my machine." With Docker we can run our project in an isolated environment which can contain the necessary dependencies and deploy them quickly.
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This section will explain the steps to follow to set up the local environment and make use of the API services developed.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+Have Docker installed and configured on the local machine. You can do this just following the next steps:
+1. Donwload [Docker](https://www.docker.com/get-started)
+2. Double-click the .exe downloaded to run the installer.
+3. Follow the Install Wizard: accept the license, authorize the installer, and proceed with the install.
+4. Click Finish to launch Docker.
+5. Docker starts automatically.
+6. Docker loads a “Welcome” window giving you tips and access to the Docker documentation. 
+
+To verify that it was installed correctly, open PowerShell or your favorite Windows terminal and run the following command:
+```sh
+  docker run hello-world
+ ```
+ 
+this will promt something like this:
+
+<p align="center">
+  <img src="images/docker-hello-world.png" alt="hello world docker" width="500" height="450">
+</p>
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/jujaes94/poke-base.git
    ```
-3. Install NPM packages
+2. Go to the root directory
+3. Open a PowerShell terminal on that folder.
+4. Execute de following command:
    ```sh
-   npm install
+    docker-compose build && docker-compose up
    ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
+5. you will see somethig like this in the last lines:
+<p align="center">
+  <img src="images/docker-compose-up" alt="docker prompt" width="100" height="100">
+</p>
 
+6. And thats it, you can now use the poke-base API.
 
-
-<!-- USAGE EXAMPLES -->
+<!-- USAGE -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+For the use of the services there are two ways to do it:
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+1. From the swagger generated by Fastapi
+2. Directly from postman with the respective urls endpoints.
+
+### Fastapi docs
+
+From your browser, enter the following link:
+ ```sh
+ localhost:8008/docs
+ ```
+ 
+you will see something like this. 
+<p align="center">
+  <img src="images/fastapi-docs.png" alt="docker prompt" width="100" height="100">
+</p>
+
+In this section you will be able to test the listed endpoints just by clicking on the "try it out" button.
+
+<p align="center">
+  <img src="images/fastapi-docs-try.png" alt="docker prompt" width="100" height="100">
+</p>
+
+With this, the parameter or payload sections that the service requests will be enabled. Once the data has been entered, click on the "execute" button and the service will respond
+
+<p align="center">
+  <img src="images/fastapi-docs-exec.png" alt="endpoint execute" width="100" height="100">
+</p>
+
+<p align="center">
+  <img src="images/fastapi-response.png" alt="endpoint response" width="100" height="100">
+</p>
+
+In order for some of the endpoints to work properly, they will need you to first log in with the correct credentials. For this, in the upper right corner, you will find an "Authorize" button that will display the following form
+
+<p align="center">
+  <img src="images/fastapi-login.png" alt="endpoint logins" width="100" height="100">
+</p>
+
+Entering only the username and its respective password, the credentials can be authenticated by clicking on "authorize". Changing the form in the following image
+
+<p align="center">
+  <img src="images/fastapi-login-final.png" alt="endpoint logins" width="100" height="100">
+</p>
+
+When raising the environment for the first time, three users with the same password are generated by defualt, which are:
+1. user@a.com
+2. user2@a.com
+3. user3@a.com
+
+password: Aa1234567!@
 
 
+### Postman
 
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
+If you want to work from postman, you work with a different url for each endpoint corresponding to the requested service.
+```sh
+ localhost:8008/{module}/{endpoint}
+ ```
 
 
 <!-- ACKNOWLEDGEMENTS -->
@@ -183,23 +173,3 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 * [Sticky Kit](http://leafo.net/sticky-kit)
 * [JVectorMap](http://jvectormap.com)
 * [Font Awesome](https://fontawesome.com)
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
