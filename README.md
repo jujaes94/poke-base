@@ -29,14 +29,14 @@
     </li>
     <li><a href="#usage">Usage</a></li>
       <ul>
-        <li><a href="#astapi-docs">Prerequisites</a></li>
-        <li><a href="#postman">Installation</a></li>
+        <li><a href="#fastapi-docs">Fastapi docs</a></li>
+        <li><a href="#postman">Postman</a></li>
       </ul>
     <li><a href="#endpoints">Endpoints</a></li>
     <ul>
-        <li><a href="#Users">Prerequisites</a></li>
-        <li><a href="#Pokemons">Installation</a></li>
-      </ul>
+        <li><a href="#users">Users</a></li>
+        <li><a href="#pokemons">Pokemons</a></li>
+    </ul>
   </ol>
 </details>
 
