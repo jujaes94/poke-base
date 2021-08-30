@@ -464,7 +464,7 @@ Delete one owned pokemon or all of them
 * request type: DELETE
 * parametrs:
   <ul>
-    <li>id_pokemon: numeric field taht indicates the id of the pokemon to edit</li>
+    <li>id_pokemon: numeric field that indicates the id of the pokemon to edit</li>
     <li>all_pokemon: boolean list that if its true, delete all the pokemons the user have </li>
   </ul>
 * authorization: bearer token of the user
